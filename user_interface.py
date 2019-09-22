@@ -155,80 +155,80 @@ def diver_details():                                                            
     combostyle.theme_use('combostyle')
 
     rows = 0                                                                    #create 10x10 grid within window
-    while rows < 10:
+    while rows < 13:
         window.rowconfigure(rows,weight=1)
         window.columnconfigure(rows,weight=1)
         rows += 1
 
-    for i in range(0,8):
+    for i in range(1,9):
         add_dive_logger(i)                                                      #function to setup dive logger
         add_diver(i)                                                            #function to setup name input
 
     sup_label = Label(window,text = 'Supervisor:',background= 'black',foreground = 'white')
     sup_label['font'] = helv
-    sup_label.grid(row = 0,column = 0,sticky = E)
+    sup_label.grid(row = 1,column = 0)
 
     sup_entry = ttk.Combobox(window,values = name_list,width = 15,background = 'black',foreground = 'white',postcommand = lambda:search(sup_entry))
     sup_entry['font'] = helv
-    sup_entry.grid(row = 0,column = 1,sticky = W)
+    sup_entry.grid(row = 2,column = 0)
 
     submit_sup = Button(window)
     submit_sup.configure(text = 'Confirm Supervisor',command = lambda:confirm_sup(submit_sup,sup_entry),background = 'black', fg = 'white')
     submit_sup['font'] = helv
-    submit_sup.grid(row = 0,column = 2)
+    submit_sup.grid(row = 3,column = 0)
 
 
     stdby_d_label = Label(window,text = 'Standby Diver:',background = 'black',foreground = 'white')
     stdby_d_label['font'] = helv
-    stdby_d_label.grid(row = 1,column = 0,sticky = E)
+    stdby_d_label.grid(row = 4,column = 0)
 
     stdby_d_entry = ttk.Combobox(window,values = name_list,width = 15,background = 'black',foreground = 'white',postcommand = lambda:search(stdby_d_entry))
     stdby_d_entry['font'] = helv
-    stdby_d_entry.grid(row = 1,column = 1,sticky = W)
+    stdby_d_entry.grid(row = 5,column = 0)
 
     stdby_d_submit = Button(window)
     stdby_d_submit.configure(text = 'Confirm Standby Diver',command = lambda:confirm_stdby_d(stdby_d_submit,stdby_d_entry),background = 'black', fg = 'white')
     stdby_d_submit['font'] = helv
-    stdby_d_submit.grid(row = 1,column = 2)
+    stdby_d_submit.grid(row = 6,column = 0)
 
 
     stdby_a_label = Label(window,text = 'Standby Diver Attendant:',background = 'black',foreground = 'white')
     stdby_a_label['font'] = helv
-    stdby_a_label.grid(row = 2,column = 0,sticky = E)
+    stdby_a_label.grid(row = 7,column = 0)
 
     stdby_a_entry = ttk.Combobox(window,values = name_list,width = 15,background = 'black',foreground = 'white',postcommand = lambda:search(stdby_a_entry))
     stdby_a_entry['font'] = helv
-    stdby_a_entry.grid(row = 2,column = 1,sticky = W)
+    stdby_a_entry.grid(row = 8,column = 0)
 
     stdby_a_submit = Button(window)
     stdby_a_submit.configure(text = 'Confirm Standby Diver Attendant',command = lambda:confirm_stdby_a(stdby_a_submit,stdby_a_entry),background = 'black', fg = 'white')
     stdby_a_submit['font'] = helv
-    stdby_a_submit.grid(row = 2,column = 2)
+    stdby_a_submit.grid(row = 9,column = 0)
 
 
     rec_label = Label(window,text = 'Recorder:',background = 'black',foreground = 'white')
     rec_label['font'] = helv
-    rec_label.grid(row = 3,column = 0,sticky = E)
+    rec_label.grid(row = 10,column = 0)
 
     rec_entry = ttk.Combobox(window,values = name_list,width = 15,background = 'black',foreground = 'white',postcommand = lambda:search(rec_entry))
     rec_entry['font'] = helv
-    rec_entry.grid(row = 3,column = 1,sticky = W)
+    rec_entry.grid(row = 11,column = 0)
 
     rec_submit = Button(window)
     rec_submit.configure(text = 'Confirm Recorder',command = lambda:confirm_rec(rec_submit,rec_entry),background = 'black', fg = 'white')
     rec_submit['font'] = helv
-    rec_submit.grid(row = 3,column = 2)
+    rec_submit.grid(row = 12,column = 0)
 
 
     end_all_button = Button(window)
     end_all_button.configure(text = 'End of all dives',foreground = 'dark green',background = 'black',command = end_all_dive)
     end_all_button['font']=helv
-    end_all_button.grid(row = 8,column = 9)
+    end_all_button.grid(row = 12,column = 8)
 
     close_window = Button(window)
     close_window.configure(text = 'Close window',command = closewindow,background = 'black' ,fg = 'red')
     close_window['font'] = helv
-    close_window.grid(row = 0, column = 9)
+    close_window.grid(row = 0, column = 8)
 
     window.mainloop()
 
@@ -236,67 +236,61 @@ def closewindow():
     window.destroy()
 
 appointment_holder = []
-
-def confirm_destroy(submit,entry,appointment_holder = appointment_holder):
-    name = entry.get()
-    if name not in appointment_holder:
+sup_name = []
+def confirm_sup(submit,entry,sup_name = sup_name, appointment_holder = appointment_holder):
+    sup_name.append(entry.get())
+    if sup_name[0] not in appointment_holder:
         submit.destroy()
         entry.destroy()
-        return name
-    else:
-        messagebox.showerror('Error','Already an appointment holder')
-        return 1
-
-appointment_holder = []
-sup_name = []
-def confirm_sup(submit,entry,sup_name = sup_name):
-    check = confirm_destroy()
-    if check == 1:
-        pass
-    else:
-        sup_name =  check
-        appointment_holder.append(sup_name)
+        appointment_holder.append(sup_name[0])
         sup_name_label = Label(window,text = sup_name[0],background = 'black',foreground = 'white')
         sup_name_label['font'] = helv
-        sup_name_label.grid(row = 0,column = 1,sticky = W)
+        sup_name_label.grid(row = 2,column = 0)
+    else:
+        sup_name.remove(sup_name[0])
+        messagebox.showerror('Error','Already an appointment holder')
 
 stdby_d_name = []
-def confirm_stdby_d(submit,entry,stdby_d_name = stdby_d_name):
-    check = confirm_destroy()
-    if check == 1:
-        pass
-    else:
-        stdby_d_name =  check
-        appointment_holder.append(stdby_d_name)
-        label = Label(window,text = sup_name[0],background = 'black',foreground = 'white')
+def confirm_stdby_d(submit,entry,stdby_d_name = stdby_d_name,appointment_holder = appointment_holder):
+    stdby_d_name.append(entry.get())
+    if stdby_d_name[0] not in appointment_holder:
+        submit.destroy()
+        entry.destroy()
+        appointment_holder.append(stdby_d_name[0])
+        stdby_d_name_label = Label(window,text = stdby_d_name[0],background = 'black',foreground = 'white')
         stdby_d_name_label['font'] = helv
-        stdby_d_name_label.grid(row = 1,column = 1,sticky = W)
-
+        stdby_d_name_label.grid(row = 5,column = 0)
+    else:
+        stdby_d_name.remove(stdby_d_name[0])
+        messagebox.showerror('Error','Already an appointment holder')
 
 stdby_a_name = []
-def confirm_stdby_a(submit,entry,stdby_a_name = stdby_a_name):
-    check = confirm_destroy()
-    if check == 1:
-        pass
-    else:
-        stdby_a_name =  check
-        appointment_holder.append(stdby_a_name)
-        label = Label(window,text = sup_name[0],background = 'black',foreground = 'white')
+def confirm_stdby_a(submit,entry,stdby_a_name = stdby_a_name,appointment_holder = appointment_holder):
+    stdby_a_name.append(entry.get())
+    if stdby_a_name[0] not in appointment_holder:
+        submit.destroy()
+        entry.destroy()
+        appointment_holder.append(stdby_a_name[0])
+        stdby_a_name_label = Label(window,text = stdby_a_name[0],background = 'black',foreground = 'white')
         stdby_a_name_label['font'] = helv
-        stdby_a_name_label.grid(row = 2,column = 1,sticky = W)
+        stdby_a_name_label.grid(row = 8,column = 0)
+    else:
+        stdby_a_name.remove(stdby_a_name[0])
+        messagebox.showerror('Error','Already an appointment holder')
 
 rec_name = []
-def confirm_rec(submit,entry,rec_name = rec_name):
-    check = confirm_destroy()
-    if check == 1:
-        pass
-    else:
-        rec_name =  check
-        appointment_holder.append(rec_name)
-        label = Label(window,text = sup_name[0],background = 'black',foreground = 'white')
+def confirm_rec(submit,entry,rec_name = rec_name,appointment_holder = appointment_holder):
+    rec_name.append(entry.get())
+    if rec_name[0] not in appointment_holder:
+        submit.destroy()
+        entry.destroy()
+        appointment_holder.append(rec_name[0])
+        rec_name_label = Label(window,text = rec_name[0],background = 'black',foreground = 'white')
         rec_name_label['font'] = helv
-        rec_name_label.grid(row = 3,column = 1,sticky = W)
-
+        rec_name_label.grid(row = 11,column = 0)
+    else:
+        rec_name.remove(rec_name[0])
+        messagebox.showerror('Error','Already an appointment holder')
 
 diver_list = []                                                                #list that will hold the relevant information
 dive_logger_list = []                                                          #list that hold current dive logger list
@@ -364,11 +358,11 @@ def get_serial(setup_logger_button,confirm_pair,x_coor,sup_name = sup_name):
         window.deiconify()
         logger_no_label = Label(window,text = 'Serial:',background = 'black',fg = 'white')                            #display the serial number of the dive logger
         logger_no_label['font']= helv
-        logger_no_label.grid(row = x_coor, column = 4,sticky=E)
+        logger_no_label.grid(row = x_coor, column = 3,sticky=E)
 
         serial_logger_label = Label(window,text = serial,background = 'black',fg = 'white')
         serial_logger_label['font'] = helv
-        serial_logger_label.grid(row = x_coor,column = 5,sticky=W)
+        serial_logger_label.grid(row = x_coor,column = 4,sticky=W)
 
         diver_dict = {}                                                             #initialise dictionary diver_dict
         diver_dict['number'] = x_coor                                               #define key -> number as x_coor
@@ -452,12 +446,12 @@ def start_dive(diver_name_enter_button,diver_label,diver_name_entrybox,x_coor,di
 
                 diver_name_label = Label(window,text = diver_name,background = 'black',foreground = 'white')              #display diver name
                 diver_name_label['font'] = helv
-                diver_name_label.grid(row = x_coor, column = 6, sticky = W)
+                diver_name_label.grid(row = x_coor, column = 7, sticky = W)
 
                 end_dive_button = Button(window)                                #create button to end dive
                 end_dive_button['font']= helv
                 end_dive_button.configure(text = 'End dive',background = 'black' ,fg = 'white',command = lambda:end_dive(diver_label,diver_name_label,end_dive_button,x_coor))
-                end_dive_button.grid(row = x_coor,column = 7)
+                end_dive_button.grid(row = x_coor,column = 8)
 
 def end_dive(diver_label,diver_name_label,end_dive_button,x_coor,diver_list = diver_list):
     end_dive_button.destroy()                                                   #destroy irrelevant labes and buttons
