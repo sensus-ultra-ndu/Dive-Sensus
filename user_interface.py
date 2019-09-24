@@ -139,8 +139,8 @@ def diver_details():                                                            
     window.attributes("-fullscreen", True)                                          #define title of window
     window.configure(background = 'black')
 
-    global helv
-    helv = font.Font(family="Helvetica", size=30, weight='bold')
+    global helv2
+    helv2 = font.Font(family="Helvetica", size=20, weight='bold')
 
     combostyle = ttk.Style()
 
@@ -164,70 +164,70 @@ def diver_details():                                                            
         add_dive_logger(i)                                                      #function to setup dive logger
         add_diver(i)                                                            #function to setup name input
 
-    sup_label = Label(window,text = 'Supervisor:',background= 'black',foreground = 'white')
-    sup_label['font'] = helv
+    sup_label = Label(window,text = 'Supervisor:',background= 'black',foreground = 'white')                 #setup sup input
+    sup_label['font'] = helv2
     sup_label.grid(row = 1,column = 0)
 
     sup_entry = ttk.Combobox(window,values = name_list,width = 15,background = 'black',foreground = 'white',postcommand = lambda:search(sup_entry))
-    sup_entry['font'] = helv
+    sup_entry['font'] = helv2
     sup_entry.grid(row = 2,column = 0)
 
     submit_sup = Button(window)
     submit_sup.configure(text = 'Confirm Supervisor',command = lambda:confirm_sup(submit_sup,sup_entry),background = 'black', fg = 'white')
-    submit_sup['font'] = helv
+    submit_sup['font'] = helv2
     submit_sup.grid(row = 3,column = 0)
 
 
-    stdby_d_label = Label(window,text = 'Standby Diver:',background = 'black',foreground = 'white')
-    stdby_d_label['font'] = helv
+    stdby_d_label = Label(window,text = 'Standby Diver:',background = 'black',foreground = 'white')         #setup standby diver input
+    stdby_d_label['font'] = helv2
     stdby_d_label.grid(row = 4,column = 0)
 
     stdby_d_entry = ttk.Combobox(window,values = name_list,width = 15,background = 'black',foreground = 'white',postcommand = lambda:search(stdby_d_entry))
-    stdby_d_entry['font'] = helv
+    stdby_d_entry['font'] = helv2
     stdby_d_entry.grid(row = 5,column = 0)
 
     stdby_d_submit = Button(window)
     stdby_d_submit.configure(text = 'Confirm Standby Diver',command = lambda:confirm_stdby_d(stdby_d_submit,stdby_d_entry),background = 'black', fg = 'white')
-    stdby_d_submit['font'] = helv
+    stdby_d_submit['font'] = helv2
     stdby_d_submit.grid(row = 6,column = 0)
 
 
-    stdby_a_label = Label(window,text = 'Standby Diver Attendant:',background = 'black',foreground = 'white')
-    stdby_a_label['font'] = helv
+    stdby_a_label = Label(window,text = 'Standby Diver Attendant:',background = 'black',foreground = 'white')       #setup standby diver attendant input
+    stdby_a_label['font'] = helv2
     stdby_a_label.grid(row = 7,column = 0)
 
     stdby_a_entry = ttk.Combobox(window,values = name_list,width = 15,background = 'black',foreground = 'white',postcommand = lambda:search(stdby_a_entry))
-    stdby_a_entry['font'] = helv
+    stdby_a_entry['font'] = helv2
     stdby_a_entry.grid(row = 8,column = 0)
 
     stdby_a_submit = Button(window)
     stdby_a_submit.configure(text = 'Confirm Standby Diver Attendant',command = lambda:confirm_stdby_a(stdby_a_submit,stdby_a_entry),background = 'black', fg = 'white')
-    stdby_a_submit['font'] = helv
+    stdby_a_submit['font'] = helv2
     stdby_a_submit.grid(row = 9,column = 0)
 
 
-    rec_label = Label(window,text = 'Recorder:',background = 'black',foreground = 'white')
-    rec_label['font'] = helv
+    rec_label = Label(window,text = 'Recorder:',background = 'black',foreground = 'white')                      #setup recoder input
+    rec_label['font'] = helv2
     rec_label.grid(row = 10,column = 0)
 
     rec_entry = ttk.Combobox(window,values = name_list,width = 15,background = 'black',foreground = 'white',postcommand = lambda:search(rec_entry))
-    rec_entry['font'] = helv
+    rec_entry['font'] = helv2
     rec_entry.grid(row = 11,column = 0)
 
     rec_submit = Button(window)
     rec_submit.configure(text = 'Confirm Recorder',command = lambda:confirm_rec(rec_submit,rec_entry),background = 'black', fg = 'white')
-    rec_submit['font'] = helv
+    rec_submit['font'] = helv2
     rec_submit.grid(row = 12,column = 0)
 
 
     end_all_button = Button(window)
     end_all_button.configure(text = 'End of all dives',foreground = 'dark green',background = 'black',command = end_all_dive)
-    end_all_button['font']=helv
+    end_all_button['font']=helv2
     end_all_button.grid(row = 12,column = 8)
 
     close_window = Button(window)
     close_window.configure(text = 'Close window',command = closewindow,background = 'black' ,fg = 'red')
-    close_window['font'] = helv
+    close_window['font'] = helv2
     close_window.grid(row = 0, column = 8)
 
     window.mainloop()
@@ -235,70 +235,195 @@ def diver_details():                                                            
 def closewindow():
     window.destroy()
 
-appointment_holder = []
+
+appointment_holder = {                                                          #establish appointment holder dictionary to hold appointment holders
+'sup':None,
+'stdby_d':None,
+'stdby_a':None,
+'rec':None
+}
+check_dive_status = 0
+diver_list = []
+
+def check_diver(name,diver_list = diver_list):
+    diver_names = []                                                    #initliase list diver_names to hold all the diver names in diver_list_dict
+    for i in range(len(diver_list)):
+        diver_names.append(diver_list[i].get('name'))                   #add all the diver names into the list diver_names
+    if name in diver_names:                                       #check if the name is already input
+        messagebox.showerror('Error','Already a Diver')
+        return 0
+    else:
+        return 1
+
+def check_appt_holder(name,appointment_holder = appt_holder):
+    i = 0                                                                       #check if names are already used as appointment holder
+    appt_names = []
+    for i in appt_holder:
+        appt_names.append(appt_holder[i])
+    if name in appt_names:
+        messagebox.showerror('Error','Already an appointment holder')
+        return 1
+    else:
+        return 0
+
+def check_status(check_dive_status = status):
+    if status != 0:
+        return 1
+    else:
+        messagebox.showerror('Error','Dives are still ongoing')
+        return 0
+
 sup_name = []
 def confirm_sup(submit,entry,sup_name = sup_name, appointment_holder = appointment_holder):
     sup_name.append(entry.get())
-    if sup_name[0] not in appointment_holder:
-        submit.destroy()
-        entry.destroy()
-        appointment_holder.append(sup_name[0])
-        sup_name_label = Label(window,text = sup_name[0],background = 'black',foreground = 'white')
-        sup_name_label['font'] = helv
-        sup_name_label.grid(row = 2,column = 0)
-    else:
+    if check_diver(sup_name) == 0:
+        if check_appt_holder(sup_name) == 0:
+            submit.destroy()
+            entry.destroy()
+            appointment_holder['sup'] = sup_name[0]
+
+            sup_name_label = Label(window,text = sup_name[0],background = 'black',foreground = 'white')
+            sup_name_label['font'] = helv2
+            sup_name_label.grid(row = 2,column = 0)
+
+            sup_change = Button(window)
+            sup_change.configure(text = 'Change Supervisor',command = lambda:change_sup(sup_name_label,sup_change),background = 'black',fg = 'white')
+            sup_change['font'] = helv2
+            sup_change.grid(row = 3, column = 0)
+
+def change_sup(name_label,change,sup_name = sup_name,appointment_holder = appointment_holder):
+    if check_status() == 0:
         sup_name.remove(sup_name[0])
-        messagebox.showerror('Error','Already an appointment holder')
+        appointment_holder['sup'] = None
+        name_label.destroy()
+        change.destroy()
+
+        sup_entry = ttk.Combobox(window,values = name_list,width = 15,background = 'black',foreground = 'white',postcommand = lambda:search(sup_entry))
+        sup_entry['font'] = helv2
+        sup_entry.grid(row = 2,column = 0)
+
+        submit_sup = Button(window)
+        submit_sup.configure(text = 'Confirm Supervisor',command = lambda:confirm_sup(submit_sup,sup_entry),background = 'black', fg = 'white')
+        submit_sup['font'] = helv2
+        submit_sup.grid(row = 3,column = 0)
 
 stdby_d_name = []
 def confirm_stdby_d(submit,entry,stdby_d_name = stdby_d_name,appointment_holder = appointment_holder):
     stdby_d_name.append(entry.get())
-    if stdby_d_name[0] not in appointment_holder:
-        submit.destroy()
-        entry.destroy()
-        appointment_holder.append(stdby_d_name[0])
-        stdby_d_name_label = Label(window,text = stdby_d_name[0],background = 'black',foreground = 'white')
-        stdby_d_name_label['font'] = helv
-        stdby_d_name_label.grid(row = 5,column = 0)
-    else:
+    if check_diver(stdby_d_name) == 0:
+        if check_appt_holder(sup_name) == 0:
+            submit.destroy()
+            entry.destroy()
+            appointment_holder['stdby_d'] = stdby_d_name[0]
+
+            stdby_d_name_label = Label(window,text = stdby_d_name[0],background = 'black',foreground = 'white')
+            stdby_d_name_label['font'] = helv2
+            stdby_d_name_label.grid(row = 5,column = 0)
+
+            stdby_d_change = Button(window)
+            stdby_d_change.configure(text = 'Change Standby Diver',command = lambda:change_stdby_d(stdby_d_name_label,stdby_d_change),background = 'black',fg = 'white')
+            stdby_d_change['font'] = helv2
+            stdby_d_change.grid(row = 6, column = 0)
+        else:
+            stdby_d_name.remove(stdby_d_name[0])
+            messagebox.showerror('Error','Already an appointment holder')
+
+def change_stdby_d(name_label,change,stdby_d_name = stdby_d_name,appointment_holder = appointment_holder):
+    if check_status() == 0:
         stdby_d_name.remove(stdby_d_name[0])
-        messagebox.showerror('Error','Already an appointment holder')
+        appointment_holder['stdby_d'] = None
+        name_label.destroy()
+        change.destroy()
+
+        stdby_d_entry = ttk.Combobox(window,values = name_list,width = 15,background = 'black',foreground = 'white',postcommand = lambda:search(stdby_d_entry))
+        stdby_d_entry['font'] = helv2
+        stdby_d_entry.grid(row = 5,column = 0)
+
+        stdby_d_submit = Button(window)
+        stdby_d_submit.configure(text = 'Confirm Standby Diver',command = lambda:confirm_stdby_d(stdby_d_submit,stdby_d_entry),background = 'black', fg = 'white')
+        stdby_d_submit['font'] = helv2
+        stdby_d_submit.grid(row = 6,column = 0)
 
 stdby_a_name = []
 def confirm_stdby_a(submit,entry,stdby_a_name = stdby_a_name,appointment_holder = appointment_holder):
     stdby_a_name.append(entry.get())
-    if stdby_a_name[0] not in appointment_holder:
-        submit.destroy()
-        entry.destroy()
-        appointment_holder.append(stdby_a_name[0])
-        stdby_a_name_label = Label(window,text = stdby_a_name[0],background = 'black',foreground = 'white')
-        stdby_a_name_label['font'] = helv
-        stdby_a_name_label.grid(row = 8,column = 0)
+    if check_diver(stdby_d_name) == 0:
+        if check_appt_holder(sup_name) == 0:
+            submit.destroy()
+            entry.destroy()
+            appointment_holder['stdby_a'] = stdby_a_name[0]
+
+            stdby_a_name_label = Label(window,text = stdby_a_name[0],background = 'black',foreground = 'white')
+            stdby_a_name_label['font'] = helv2
+            stdby_a_name_label.grid(row = 8,column = 0)
+
+            stdby_a_change = Button(window)
+            stdby_a_change.configure(text = 'Change Standby Diver Attendant',command = lambda:change_stdby_a(stdby_a_name_label,stdby_a_change),background = 'black',fg = 'white')
+            stdby_a_change['font'] = helv2
+            stdby_a_change.grid(row = 7, column = 0)
     else:
         stdby_a_name.remove(stdby_a_name[0])
         messagebox.showerror('Error','Already an appointment holder')
 
+def change_stdby_a(name_label,change,stdby_a_name = stdby_a_name,appointment_holder = appointment_holder):
+    if check_status() == 0:
+        stdby_a_name.remove(stdby_a_name[0])
+        appointment_holder['stdby_a'] = None
+        name_label.destroy()
+        change.destroy()
+
+        stdby_a_entry = ttk.Combobox(window,values = name_list,width = 15,background = 'black',foreground = 'white',postcommand = lambda:search(stdby_a_entry))
+        stdby_a_entry['font'] = helv2
+        stdby_a_entry.grid(row = 8,column = 0)
+
+        stdby_a_submit = Button(window)
+        stdby_a_submit.configure(text = 'Confirm Standby Diver Attendant',command = lambda:confirm_stdby_a(stdby_a_submit,stdby_a_entry),background = 'black', fg = 'white')
+        stdby_a_submit['font'] = helv2
+        stdby_a_submit.grid(row = 9,column = 0)
+
 rec_name = []
 def confirm_rec(submit,entry,rec_name = rec_name,appointment_holder = appointment_holder):
     rec_name.append(entry.get())
-    if rec_name[0] not in appointment_holder:
-        submit.destroy()
-        entry.destroy()
-        appointment_holder.append(rec_name[0])
-        rec_name_label = Label(window,text = rec_name[0],background = 'black',foreground = 'white')
-        rec_name_label['font'] = helv
-        rec_name_label.grid(row = 11,column = 0)
-    else:
-        rec_name.remove(rec_name[0])
-        messagebox.showerror('Error','Already an appointment holder')
+    if check_diver(stdby_d_name) == 0:
+        if check_appt_holder(sup_name) == 0:
+            submit.destroy()
+            entry.destroy()
+            appointment_holder['rec'] = rec_name[0]
 
-diver_list = []                                                                #list that will hold the relevant information
+            rec_name_label = Label(window,text = rec_name[0],background = 'black',foreground = 'white')
+            rec_name_label['font'] = helv2
+            rec_name_label.grid(row = 11,column = 0)
+
+            rec_change = Button(window)
+            rec_change.configure(text = 'Change Recorder',command = lambda:change_rec(rec_name_label,rec_change),background = 'black',fg = 'white')
+            rec_change['font'] = helv2
+            rec_change.grid(row = 12, column = 0)
+        else:
+            rec_name.remove(rec_name[0])
+            messagebox.showerror('Error','Already an appointment holder')
+
+def change_rec(name_label,change,rec_name = rec_name,appointment_holder = appointment_holder):
+    if check_status() == 0:
+        rec_name.remove(rec_name[0])
+        appointment_holder['rec_name'] = None
+        name_label.destroy()
+        change.destroy()
+
+        rec_entry = ttk.Combobox(window,values = name_list,width = 15,background = 'black',foreground = 'white',postcommand = lambda:search(rec_entry))
+        rec_entry['font'] = helv2
+        rec_entry.grid(row = 11,column = 0)
+
+        rec_submit = Button(window)
+        rec_submit.configure(text = 'Confirm Recorder',command = lambda:confirm_rec(rec_submit,rec_entry),background = 'black', fg = 'white')
+        rec_submit['font'] = helv2
+        rec_submit.grid(row = 12,column = 0)
+
 dive_logger_list = []                                                          #list that hold current dive logger list
 
 def add_dive_logger(x_coor, sup_name = sup_name):                                                    #create button to add dive logger
     setup_logger_button = Button(window)
     setup_logger_button.configure(text = 'Add dive logger',background = 'black' ,fg = 'white',command = lambda:confirm_setup(setup_logger_button,x_coor, sup_name))
-    setup_logger_button['font'] = helv
+    setup_logger_button['font'] = helv2
     setup_logger_button.grid(row = x_coor,column = 4, sticky=W)
 
 def confirm_setup(setup_logger_button,x_coor,sup_name):
@@ -357,11 +482,11 @@ def get_serial(setup_logger_button,confirm_pair,x_coor,sup_name = sup_name):
         window.update()
         window.deiconify()
         logger_no_label = Label(window,text = 'Serial:',background = 'black',fg = 'white')                            #display the serial number of the dive logger
-        logger_no_label['font']= helv
+        logger_no_label['font']= helv2
         logger_no_label.grid(row = x_coor, column = 3,sticky=E)
 
         serial_logger_label = Label(window,text = serial,background = 'black',fg = 'white')
-        serial_logger_label['font'] = helv
+        serial_logger_label['font'] = helv2
         serial_logger_label.grid(row = x_coor,column = 4,sticky=W)
 
         diver_dict = {}                                                             #initialise dictionary diver_dict
@@ -392,20 +517,20 @@ def search(cb3,nl = name_list):                                                 
 
 def add_diver(x_coor,nl = name_list):                                           #function for diver name input
     diver_label = Label(window,text = 'Diver name:',background = 'black',foreground = 'white')
-    diver_label['font'] = helv
+    diver_label['font'] = helv2
     diver_label.grid(row = x_coor,column = 6,sticky = E)
 
     diver_name_entrybox = ttk.Combobox(window,background = 'black',foreground = 'white')
     diver_name_entrybox.configure(values = name_list,width = 15,postcommand = lambda:search(diver_name_entrybox))
-    diver_name_entrybox['font'] = helv
+    diver_name_entrybox['font'] = helv2
     diver_name_entrybox.grid(row = x_coor, column = 7,sticky = W)
 
     diver_name_enter_button = Button(window)
-    diver_name_enter_button['font'] = helv
+    diver_name_enter_button['font'] = helv2
     diver_name_enter_button.configure(text = 'Submit',background = 'black',fg = 'white' ,command = lambda:start_dive(diver_name_enter_button,diver_label,diver_name_entrybox,x_coor))
     diver_name_enter_button.grid(row = x_coor,column = 8)
 
-def start_dive(diver_name_enter_button,diver_label,diver_name_entrybox,x_coor,diver_list=diver_list,appointment_holder = appointment_holder):
+def start_dive(diver_name_enter_button,diver_label,diver_name_entrybox,x_coor,diver_list=diver_list,appointment_holder = appointment_holder,check_dive_status = status):
     diver_name = diver_name_entrybox.get()                                      #obtain input from entrybox
 
     a = 0
@@ -421,15 +546,16 @@ def start_dive(diver_name_enter_button,diver_label,diver_name_entrybox,x_coor,di
             messagebox.showerror('Error','No dive logger setup')
             a = 1
         else:
-            i = 0
-            diver_names = []                                                    #initliase list diver_names to hold all the diver names in diver_list_dict
-            for i in range(len(diver_list)):
-                diver_names.append(diver_list[i].get('name'))                   #add all the diver names into the list diver_names
-            if diver_name in diver_names:                                       #check if the name is already input
-                messagebox.showerror('Error','Duplicate divers')
+            if check_diver(diver_name) != 0:
                 a = 1
-            if diver_name in appointment_holder:
-                messagebox.showerror('Error','Already an appointment holder')
+            if check_appt_holder(diver_name) != 0:
+                a = 1
+            i = 0
+            appt_names = []
+            for i in appointment_holder:
+                appt_names.append(appointment_holder[i])
+            if None in appt_names:
+                messagebox.showerror('Error','Input appointment holders')
                 a = 1
 
     if a == 0:                                                                  #if no errors
@@ -437,6 +563,7 @@ def start_dive(diver_name_enter_button,diver_label,diver_name_entrybox,x_coor,di
         diver_name_enter_button.destroy()
 
         time_start = datetime.datetime.now()                                    #record datetime
+        status += 1
 
         i = 0
         for i in range(len(diver_list)):
@@ -445,21 +572,21 @@ def start_dive(diver_name_enter_button,diver_label,diver_name_entrybox,x_coor,di
                 diver_list[i]['time start'] = time_start                        #add key - > time start to record start time
 
                 diver_name_label = Label(window,text = diver_name,background = 'black',foreground = 'white')              #display diver name
-                diver_name_label['font'] = helv
+                diver_name_label['font'] = helv2
                 diver_name_label.grid(row = x_coor, column = 7, sticky = W)
 
                 end_dive_button = Button(window)                                #create button to end dive
-                end_dive_button['font']= helv
+                end_dive_button['font']= helv2
                 end_dive_button.configure(text = 'End dive',background = 'black' ,fg = 'white',command = lambda:end_dive(diver_label,diver_name_label,end_dive_button,x_coor))
                 end_dive_button.grid(row = x_coor,column = 8)
 
-def end_dive(diver_label,diver_name_label,end_dive_button,x_coor,diver_list = diver_list):
+def end_dive(diver_label,diver_name_label,end_dive_button,x_coor,diver_list = diver_list, check_dive_status = status):
     end_dive_button.destroy()                                                   #destroy irrelevant labes and buttons
     diver_name_label.destroy()
     diver_label.destroy()
 
     time_end = datetime.datetime.now()                                          #record end time of dive
-
+    status -= 1
     i = 0
     for i in range(len(diver_list)):
         if (diver_list[i].get('number')) == x_coor:                             #when the diver_no thats in diver_list is equal to the input x_coor
@@ -480,7 +607,7 @@ def end_all_dive(diver_list = diver_list):
         if len(diver_list[i]) > 3:
             a=1
     if a==1:
-        messagebox.showerror('Error','Dives are still on going')
+        messagebox.showerror('Error','Dives are still ongoing')
     else:
         prompt_end_dive()
 
