@@ -242,7 +242,6 @@ appointment_holder = {                                                          
 'stdby_a':None,
 'rec':None
 }
-check_dive_status = 0
 diver_list = []
 
 def check_diver(name,diver_list = diver_list):
@@ -255,7 +254,7 @@ def check_diver(name,diver_list = diver_list):
     else:
         return 1
 
-def check_appt_holder(name,appointment_holder = appt_holder):
+def check_appt_holder(name,appt_holder = appointment_holder):
     i = 0                                                                       #check if names are already used as appointment holder
     appt_names = []
     for i in appt_holder:
@@ -266,18 +265,19 @@ def check_appt_holder(name,appointment_holder = appt_holder):
     else:
         return 0
 
-def check_status(check_dive_status = status):
-    if status != 0:
-        return 1
+status = 0
+def check_status(status = status):
+    if status == 0:
+        return 0
     else:
         messagebox.showerror('Error','Dives are still ongoing')
-        return 0
+        return 1
 
 sup_name = []
 def confirm_sup(submit,entry,sup_name = sup_name, appointment_holder = appointment_holder):
     sup_name.append(entry.get())
-    if check_diver(sup_name) == 0:
-        if check_appt_holder(sup_name) == 0:
+    if check_diver(sup_name[0]) == 0:
+        if check_appt_holder(sup_name[0]) == 0:
             submit.destroy()
             entry.destroy()
             appointment_holder['sup'] = sup_name[0]
@@ -290,6 +290,8 @@ def confirm_sup(submit,entry,sup_name = sup_name, appointment_holder = appointme
             sup_change.configure(text = 'Change Supervisor',command = lambda:change_sup(sup_name_label,sup_change),background = 'black',fg = 'white')
             sup_change['font'] = helv2
             sup_change.grid(row = 3, column = 0)
+    else:
+        sup_name.remove(sup_name[0])
 
 def change_sup(name_label,change,sup_name = sup_name,appointment_holder = appointment_holder):
     if check_status() == 0:
@@ -310,8 +312,8 @@ def change_sup(name_label,change,sup_name = sup_name,appointment_holder = appoin
 stdby_d_name = []
 def confirm_stdby_d(submit,entry,stdby_d_name = stdby_d_name,appointment_holder = appointment_holder):
     stdby_d_name.append(entry.get())
-    if check_diver(stdby_d_name) == 0:
-        if check_appt_holder(sup_name) == 0:
+    if check_diver(stdby_d_name[0]) == 0:
+        if check_appt_holder(stdby_d_name[0]) == 0:
             submit.destroy()
             entry.destroy()
             appointment_holder['stdby_d'] = stdby_d_name[0]
@@ -326,7 +328,6 @@ def confirm_stdby_d(submit,entry,stdby_d_name = stdby_d_name,appointment_holder 
             stdby_d_change.grid(row = 6, column = 0)
         else:
             stdby_d_name.remove(stdby_d_name[0])
-            messagebox.showerror('Error','Already an appointment holder')
 
 def change_stdby_d(name_label,change,stdby_d_name = stdby_d_name,appointment_holder = appointment_holder):
     if check_status() == 0:
@@ -347,8 +348,8 @@ def change_stdby_d(name_label,change,stdby_d_name = stdby_d_name,appointment_hol
 stdby_a_name = []
 def confirm_stdby_a(submit,entry,stdby_a_name = stdby_a_name,appointment_holder = appointment_holder):
     stdby_a_name.append(entry.get())
-    if check_diver(stdby_d_name) == 0:
-        if check_appt_holder(sup_name) == 0:
+    if check_diver(stdby_a_name) == 0:
+        if check_appt_holder(stdyby_a_name) == 0:
             submit.destroy()
             entry.destroy()
             appointment_holder['stdby_a'] = stdby_a_name[0]
@@ -363,7 +364,6 @@ def confirm_stdby_a(submit,entry,stdby_a_name = stdby_a_name,appointment_holder 
             stdby_a_change.grid(row = 7, column = 0)
     else:
         stdby_a_name.remove(stdby_a_name[0])
-        messagebox.showerror('Error','Already an appointment holder')
 
 def change_stdby_a(name_label,change,stdby_a_name = stdby_a_name,appointment_holder = appointment_holder):
     if check_status() == 0:
@@ -384,8 +384,8 @@ def change_stdby_a(name_label,change,stdby_a_name = stdby_a_name,appointment_hol
 rec_name = []
 def confirm_rec(submit,entry,rec_name = rec_name,appointment_holder = appointment_holder):
     rec_name.append(entry.get())
-    if check_diver(stdby_d_name) == 0:
-        if check_appt_holder(sup_name) == 0:
+    if check_diver(rec_name[0]) == 0:
+        if check_appt_holder(rec_name[0]) == 0:
             submit.destroy()
             entry.destroy()
             appointment_holder['rec'] = rec_name[0]
@@ -400,7 +400,6 @@ def confirm_rec(submit,entry,rec_name = rec_name,appointment_holder = appointmen
             rec_change.grid(row = 12, column = 0)
         else:
             rec_name.remove(rec_name[0])
-            messagebox.showerror('Error','Already an appointment holder')
 
 def change_rec(name_label,change,rec_name = rec_name,appointment_holder = appointment_holder):
     if check_status() == 0:
