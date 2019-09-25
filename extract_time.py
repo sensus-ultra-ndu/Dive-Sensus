@@ -3,7 +3,7 @@ import sys
 import datetime
 from datetime import timedelta
 import pandas as pd
-hi
+
 def extract_time(df):
     if df is None:                                                              #check for nonetype
         print('Error: No dive data')
@@ -45,7 +45,7 @@ def extract_time(df):
             secl = time_left.second
             left_bottom = left_surface + timedelta(hours = hourl,minutes = minl, seconds = secl)        #add to left surface time to obtain left bottom                                     #search df bottom up
 
-hi
+
         for row in df.iloc[::-1].iterrows():                                       #iterate through df in reverse
             if row[1]['sample depth (m)'] >0.110:                               #once dive logger is deeper than 0.1m
                 dive_duration_str = row[1]['sample time (min)']                   #obtain dive duration
@@ -69,4 +69,3 @@ hi
         sup = df['Supervisor'][1]
         data = [name,sup,left_surface,left_bottom,reach_surface]
     return data
-hi
