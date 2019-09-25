@@ -7,4 +7,3 @@ if regex.match(string) is None:
 	print('cannot')
 else:
     print('ok')
-    uigyviycviy
