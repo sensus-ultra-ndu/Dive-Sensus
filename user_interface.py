@@ -250,9 +250,9 @@ def check_diver(name,diver_list = diver_list):
         diver_names.append(diver_list[i].get('name'))                   #add all the diver names into the list diver_names
     if name in diver_names:                                       #check if the name is already input
         messagebox.showerror('Error','Already a Diver')
-        return 0
-    else:
         return 1
+    else:
+        return 0
 
 def check_appt_holder(name,appt_holder = appointment_holder):
     i = 0                                                                       #check if names are already used as appointment holder
