@@ -349,7 +349,7 @@ stdby_a_name = []
 def confirm_stdby_a(submit,entry,stdby_a_name = stdby_a_name,appointment_holder = appointment_holder):
     stdby_a_name.append(entry.get())
     if check_diver(stdby_a_name) == 0:
-        if check_appt_holder(stdyby_a_name) == 0:
+        if check_appt_holder(stdby_a_name) == 0:
             submit.destroy()
             entry.destroy()
             appointment_holder['stdby_a'] = stdby_a_name[0]
