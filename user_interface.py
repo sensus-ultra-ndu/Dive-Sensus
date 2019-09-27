@@ -349,7 +349,7 @@ stdby_a_name = []
 def confirm_stdby_a(submit,entry,stdby_a_name = stdby_a_name,appointment_holder = appointment_holder):
     stdby_a_name.append(entry.get())
     if check_diver(stdby_a_name) == 0:
-        if check_appt_holder(stdyby_a_name) == 0:
+        if check_appt_holder(stdby_a_name) == 0:
             submit.destroy()
             entry.destroy()
             appointment_holder['stdby_a'] = stdby_a_name[0]
@@ -361,7 +361,7 @@ def confirm_stdby_a(submit,entry,stdby_a_name = stdby_a_name,appointment_holder 
             stdby_a_change = Button(window)
             stdby_a_change.configure(text = 'Change Standby Diver Attendant',command = lambda:change_stdby_a(stdby_a_name_label,stdby_a_change),background = 'black',fg = 'white')
             stdby_a_change['font'] = helv2
-            stdby_a_change.grid(row = 7, column = 0)
+            stdby_a_change.grid(row = 9, column = 0)
     else:
         stdby_a_name.remove(stdby_a_name[0])
 
