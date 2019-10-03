@@ -529,7 +529,7 @@ def add_diver(x_coor,nl = name_list):                                           
     diver_name_enter_button.configure(text = 'Submit',background = 'black',fg = 'white' ,command = lambda:start_dive(diver_name_enter_button,diver_label,diver_name_entrybox,x_coor))
     diver_name_enter_button.grid(row = x_coor,column = 8)
 
-def start_dive(diver_name_enter_button,diver_label,diver_name_entrybox,x_coor,diver_list=diver_list,appointment_holder = appointment_holder,check_dive_status = status):
+def start_dive(diver_name_enter_button,diver_label,diver_name_entrybox,x_coor,diver_list=diver_list,appointment_holder = appointment_holder,status = status):
     diver_name = diver_name_entrybox.get()                                      #obtain input from entrybox
 
     a = 0
@@ -579,7 +579,7 @@ def start_dive(diver_name_enter_button,diver_label,diver_name_entrybox,x_coor,di
                 end_dive_button.configure(text = 'End dive',background = 'black' ,fg = 'white',command = lambda:end_dive(diver_label,diver_name_label,end_dive_button,x_coor))
                 end_dive_button.grid(row = x_coor,column = 8)
 
-def end_dive(diver_label,diver_name_label,end_dive_button,x_coor,diver_list = diver_list, check_dive_status = status):
+def end_dive(diver_label,diver_name_label,end_dive_button,x_coor,diver_list = diver_list, status = status):
     end_dive_button.destroy()                                                   #destroy irrelevant labes and buttons
     diver_name_label.destroy()
     diver_label.destroy()
