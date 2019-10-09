@@ -61,7 +61,7 @@ def import_device():
 	auto.press('e')
 	for i in range(0,3):
 		auto.press('tab')
-	auto.write('com11')
+	auto.write('com')
 	for i in range(0,5):
 		auto.press('tab')
 	auto.press('end')

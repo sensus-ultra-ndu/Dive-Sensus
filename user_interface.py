@@ -473,7 +473,7 @@ def cancel_setup(confirm_pair):                                                 
 def get_serial(setup_logger_button,confirm_pair,x_coor,sup_name = sup_name):
     #get serial number of dive logger here
     serial = backend.get_device_id()
-    regex = re.compile(r'\d\w\d{7}\w')
+    regex = re.compile(r'[a-zA-Z0-9_]{10}')
     if regex.match(serial) is not None and serial not in dive_logger_list:
         setup_logger_button.destroy()                                               #destroy irrelevant windows and button
         confirm_pair.destroy()
